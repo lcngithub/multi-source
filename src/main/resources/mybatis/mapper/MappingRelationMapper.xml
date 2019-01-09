@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bsoft.mysql.dao.MappingRelationMapper">
+    <resultMap id="BaseResultMap" type="com.bsoft.entity.MappingRelation">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="url" jdbcType="VARCHAR" property="url"/>
+        <result column="data_source" jdbcType="VARCHAR" property="dataSource"/>
+        <result column="method" jdbcType="VARCHAR" property="method"/>
+        <result column="date_format" jdbcType="VARCHAR" property="dateFormat"/>
+        <result column="remake" jdbcType="VARCHAR" property="remake"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+    id, url, data_source, method, date_format, remake
+  </sql>
+    <select id="selectByExample" parameterType="com.bsoft.entity.MappingRelationExample" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from mapping_relation
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mapping_relation
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from mapping_relation
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+    <delete id="deleteByExample" parameterType="com.bsoft.entity.MappingRelationExample">
+        delete from mapping_relation
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.bsoft.entity.MappingRelation">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into mapping_relation (url, data_source, method,
+        date_format, remake)
+        values (#{url,jdbcType=VARCHAR}, #{dataSource,jdbcType=VARCHAR}, #{method,jdbcType=VARCHAR},
+        #{dateFormat,jdbcType=VARCHAR}, #{remake,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.bsoft.entity.MappingRelation">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into mapping_relation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="url != null">
+                url,
+            </if>
+            <if test="dataSource != null">
+                data_source,
+            </if>
+            <if test="method != null">
+                method,
+            </if>
+            <if test="dateFormat != null">
+                date_format,
+            </if>
+            <if test="remake != null">
+                remake,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="url != null">
+                #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="dataSource != null">
+                #{dataSource,jdbcType=VARCHAR},
+            </if>
+            <if test="method != null">
+                #{method,jdbcType=VARCHAR},
+            </if>
+            <if test="dateFormat != null">
+                #{dateFormat,jdbcType=VARCHAR},
+            </if>
+            <if test="remake != null">
+                #{remake,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.bsoft.entity.MappingRelationExample" resultType="java.lang.Integer">
+        select count(*) from mapping_relation
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update mapping_relation
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=BIGINT},
+            </if>
+            <if test="record.url != null">
+                url = #{record.url,jdbcType=VARCHAR},
+            </if>
+            <if test="record.dataSource != null">
+                data_source = #{record.dataSource,jdbcType=VARCHAR},
+            </if>
+            <if test="record.method != null">
+                method = #{record.method,jdbcType=VARCHAR},
+            </if>
+            <if test="record.dateFormat != null">
+                date_format = #{record.dateFormat,jdbcType=VARCHAR},
+            </if>
+            <if test="record.remake != null">
+                remake = #{record.remake,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update mapping_relation
+        set id = #{record.id,jdbcType=BIGINT},
+        url = #{record.url,jdbcType=VARCHAR},
+        data_source = #{record.dataSource,jdbcType=VARCHAR},
+        method = #{record.method,jdbcType=VARCHAR},
+        date_format = #{record.dateFormat,jdbcType=VARCHAR},
+        remake = #{record.remake,jdbcType=VARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.bsoft.entity.MappingRelation">
+        update mapping_relation
+        <set>
+            <if test="url != null">
+                url = #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="dataSource != null">
+                data_source = #{dataSource,jdbcType=VARCHAR},
+            </if>
+            <if test="method != null">
+                method = #{method,jdbcType=VARCHAR},
+            </if>
+            <if test="dateFormat != null">
+                date_format = #{dateFormat,jdbcType=VARCHAR},
+            </if>
+            <if test="remake != null">
+                remake = #{remake,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.bsoft.entity.MappingRelation">
+    update mapping_relation
+    set url = #{url,jdbcType=VARCHAR},
+      data_source = #{dataSource,jdbcType=VARCHAR},
+      method = #{method,jdbcType=VARCHAR},
+      date_format = #{dateFormat,jdbcType=VARCHAR},
+      remake = #{remake,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+    <select id="selectByUrl" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from mapping_relation
+        where url = #{url,jdbcType=VARCHAR}
+    </select>
+</mapper>
+
+
+

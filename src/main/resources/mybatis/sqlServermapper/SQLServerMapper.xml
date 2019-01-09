@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bsoft.sqlServer.dao.SqlServerMapper">
+
+    <select id="selectDate" resultType="java.lang.String" parameterType="java.lang.String">
+    select GETDATE();
+    </select>
+
+    <select id="queryData" resultType="java.lang.String" parameterType="java.util.Map">
+        DECLARE
+        @code int,
+        @message nvarchar(max),
+        @outstr xml,
+        @instr nvarchar(max),
+        @sql nvarchar(200),
+        @function nvarchar(100)
+        set @function =#{method}
+        set @instr =  #{inStr}
+
+        BEGIN TRY
+        SET @sql = @function +' @instr,@outstr OUTPUT'
+        EXEC "sp_executesql" @sql,N'@instr nvarchar(max) ,@outstr xml OUTPUT',@instr ,@outstr OUTPUT
+        END TRY
+        BEGIN CATCH
+        set @message = ERROR_MESSAGE()
+        set @code = -1
+        <![CDATA[set @outstr = '<code>-1</code><message>'+ @message+'</message>' ]]>
+        END CATCH
+        select @outstr
+    </select>
+</mapper>
