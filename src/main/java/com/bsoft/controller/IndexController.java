@@ -35,6 +35,7 @@ public class IndexController {
 
     //数据源类型
     private static final String SQL_SERVER = "SQLServer";
+    private static final String SQL_SERVER2 = "SQLServer2";
     private static final String ORACLE = "oracle";
     private static final String MYSQL = "mysql";
 
@@ -91,10 +92,18 @@ public class IndexController {
             }
             String dataSource = relation.getDataSource();
             System.out.println("dataSource:" + relation.getDataSource());
-            String returnData="";
+            String returnData = "";
             switch (dataSource) {
                 case SQL_SERVER:
-                    returnData=sqlServerService.queryData(req);
+                    returnData = sqlServerService.queryData(req);
+                    log.info("returnData:" + returnData);
+                    if (JSON_FORMAT.equals(relation.getDateFormat())) {
+                        return returnData;
+                    }
+                    xmlJSONObj = XML.toJSONObject(returnData);
+                    break;
+                case SQL_SERVER2:
+                    returnData = sqlServerService.queryData2(req);
                     log.info("returnData:" + returnData);
                     if (JSON_FORMAT.equals(relation.getDateFormat())) {
                         return returnData;
@@ -106,7 +115,7 @@ public class IndexController {
                     Clob clob = (Clob) req.get("s_return");
                     if (clob != null) {
                         try {
-                            returnData=DataChangeUtil.clobToString(clob).trim();
+                            returnData = DataChangeUtil.clobToString(clob).trim();
                             log.info("returnData:" + returnData);
                             if (JSON_FORMAT.equals(relation.getDateFormat())) {
                                 return returnData;
@@ -124,9 +133,9 @@ public class IndexController {
                     break;
             }
         } else {
-                xmlJSONObj.append("code", -1);
-                xmlJSONObj.append("message", "无url为：" + url + "的地址,请查询!");
-                return xmlJSONObj.toString();
+            xmlJSONObj.append("code", -1);
+            xmlJSONObj.append("message", "无url为：" + url + "的地址,请查询!");
+            return xmlJSONObj.toString();
         }
         return xmlJSONObj.toString();
     }
