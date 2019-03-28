@@ -10,14 +10,14 @@ import java.util.HashMap;
 @Service
 public class SqlServerService2 {
     @Autowired
-    private SqlServerMapper2 sqlServerMapper;
+    private SqlServerMapper2 sqlServerMapper2;
 
     public String selectDate() {
-        return sqlServerMapper.selectDate();
+        return sqlServerMapper2.selectDate();
     }
 
     public String queryData(HashMap<String, Object> req) {
-        return sqlServerMapper.queryData(req);
+        return sqlServerMapper2.queryData(req);
     }
 
 }

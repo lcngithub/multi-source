@@ -18,24 +18,24 @@ import java.io.IOException;
 
 // basePackages 最好分开配置 如果放在同一个文件夹可能会报错
 @Configuration
-@MapperScan(basePackages = "com.bsoft.sqlServer2", sqlSessionTemplateRef = "test2SqlSessionTemplate")
+@MapperScan(basePackages = "com.bsoft.sqlServer2", sqlSessionTemplateRef = "test3SqlSessionTemplate")
 public class SqlServerMyBatisConfig2 {
 
     // 配置数据源
-    @Bean(name = "test2DataSource2")
+    @Bean(name = "test3DataSource")
     @ConfigurationProperties(prefix = "sqlServer.datasource2")
     public DataSource dataSource() {
         return DataSourceBuilder.create().build();
     }
 
-    @Bean(name = "test2TransactionManager2")
-    public DataSourceTransactionManager transactionManager(@Qualifier("test2DataSource2") DataSource dataSource) {
+    @Bean(name = "test3TransactionManager")
+    public DataSourceTransactionManager transactionManager(@Qualifier("test3DataSource") DataSource dataSource) {
         return new DataSourceTransactionManager(dataSource);
 
     }
 
-    @Bean(name = "test2SqlSessionFactory3")
-    public SqlSessionFactory testSqlSessionFactory(@Qualifier("test2DataSource2") DataSource dataSource)
+    @Bean(name = "test3SqlSessionFactory")
+    public SqlSessionFactory testSqlSessionFactory(@Qualifier("test3DataSource") DataSource dataSource)
             throws Exception {
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
@@ -48,9 +48,9 @@ public class SqlServerMyBatisConfig2 {
         }
     }
 
-    @Bean(name = "test2SqlSessionTemplate2")
+    @Bean(name = "test3SqlSessionTemplate")
     public SqlSessionTemplate testSqlSessionTemplate(
-            @Qualifier("test2SqlSessionFactory3") SqlSessionFactory sqlSessionFactory) throws Exception {
+            @Qualifier("test3SqlSessionFactory") SqlSessionFactory sqlSessionFactory) throws Exception {
         return new SqlSessionTemplate(sqlSessionFactory);
     }
 }
