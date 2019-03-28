@@ -8,7 +8,7 @@ import java.util.HashMap;
 @Repository
 public interface SqlServerMapper {
 
-	String selectDate();
+    String selectDate();
 
-	String queryData(HashMap<String,Object> req);
+    String queryData(HashMap<String, Object> req);
 }

@@ -5,6 +5,7 @@ import com.bsoft.entity.MappingRelation;
 import com.bsoft.mysql.service.MappingRelationService;
 import com.bsoft.oracle.service.OracleService;
 import com.bsoft.sqlServer.service.SqlServerService;
+import com.bsoft.sqlServer2.service.SqlServerService2;
 import com.bsoft.utils.DataChangeUtil;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
@@ -31,6 +32,8 @@ public class IndexController {
     @Autowired
     private SqlServerService sqlServerService;
     @Autowired
+    private SqlServerService2 sqlServerService2;
+    @Autowired
     private OracleService oracleService;
 
     //数据源类型
@@ -45,7 +48,7 @@ public class IndexController {
     private static final String JSON_FORMAT = "json";
 
     @Value("${inStr.data.format}")
-    private String INSTR_FORMAT;
+    private String instrFormat;
 
 
     @RequestMapping("/index")
@@ -77,9 +80,9 @@ public class IndexController {
             log.info("inStr:" + jsonParam);
             String inStr = "";
             String dateFormat = relation.getDateFormat();
-            if (XML_FORMAT.equals(INSTR_FORMAT)) {
+            if (XML_FORMAT.equals(instrFormat)) {
                 inStr = "<xml>" + XML.toString(jsonParam) + "</xml>";
-            } else if (JSON_FORMAT.equals(INSTR_FORMAT)) {
+            } else if (JSON_FORMAT.equals(instrFormat)) {
                 inStr = inStr;
             }
             req.put("inStr", inStr);
@@ -103,7 +106,7 @@ public class IndexController {
                     xmlJSONObj = XML.toJSONObject(returnData);
                     break;
                 case SQL_SERVER2:
-                    returnData = sqlServerService.queryData2(req);
+                    returnData = sqlServerService2.queryData(req);
                     log.info("returnData:" + returnData);
                     if (JSON_FORMAT.equals(relation.getDateFormat())) {
                         return returnData;

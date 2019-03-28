@@ -1,16 +1,16 @@
 
-package com.bsoft.sqlServer.service;
+package com.bsoft.sqlServer2.service;
 
-import com.bsoft.sqlServer.dao.SqlServerMapper;
+import com.bsoft.sqlServer2.dao.SqlServerMapper2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 
 @Service
-public class SqlServerService {
+public class SqlServerService2 {
     @Autowired
-    private SqlServerMapper sqlServerMapper;
+    private SqlServerMapper2 sqlServerMapper;
 
     public String selectDate() {
         return sqlServerMapper.selectDate();

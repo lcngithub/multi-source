@@ -18,62 +18,39 @@ import java.io.IOException;
 
 // basePackages 最好分开配置 如果放在同一个文件夹可能会报错
 @Configuration
-@MapperScan(basePackages = "com.bsoft.sqlServer", sqlSessionTemplateRef = "test2SqlSessionTemplate")
+@MapperScan(basePackages = "com.bsoft.sqlServer2", sqlSessionTemplateRef = "test2SqlSessionTemplate")
 public class SqlServerMyBatisConfig2 {
 
-	// 配置数据源
-	@Bean(name = "test2DataSource")
-	@ConfigurationProperties(prefix = "sqlServer.datasource2")
-	public DataSource dataSource() {
-		return DataSourceBuilder.create().build();
-	}
+    // 配置数据源
+    @Bean(name = "test2DataSource2")
+    @ConfigurationProperties(prefix = "sqlServer.datasource2")
+    public DataSource dataSource() {
+        return DataSourceBuilder.create().build();
+    }
 
-	@Bean(name = "test2TransactionManager")
-	public DataSourceTransactionManager transactionManager(@Qualifier("test2DataSource") DataSource dataSource) {
-		return new DataSourceTransactionManager(dataSource);
+    @Bean(name = "test2TransactionManager2")
+    public DataSourceTransactionManager transactionManager(@Qualifier("test2DataSource2") DataSource dataSource) {
+        return new DataSourceTransactionManager(dataSource);
 
-	}
+    }
 
-//	public DataSource testDataSource(DBConfig2 testConfig) throws SQLException {
-//		MysqlXADataSource mysqlXaDataSource = new MysqlXADataSource();
-//		mysqlXaDataSource.setUrl(testConfig.getUrl());
-//		mysqlXaDataSource.setPinGlobalTxToPhysicalConnection(true);
-//		mysqlXaDataSource.setPassword(testConfig.getPassword());
-//		mysqlXaDataSource.setUser(testConfig.getUsername());
-//		mysqlXaDataSource.setPinGlobalTxToPhysicalConnection(true);
-//
-//		AtomikosDataSourceBean xaDataSource = new AtomikosDataSourceBean();
-//		xaDataSource.setXaDataSource(mysqlXaDataSource);
-//		xaDataSource.setUniqueResourceName("test2DataSource");
-//
-//		xaDataSource.setMinPoolSize(testConfig.getMinPoolSize());
-//		xaDataSource.setMaxPoolSize(testConfig.getMaxPoolSize());
-//		xaDataSource.setMaxLifetime(testConfig.getMaxLifetime());
-//		xaDataSource.setBorrowConnectionTimeout(testConfig.getBorrowConnectionTimeout());
-//		xaDataSource.setLoginTimeout(testConfig.getLoginTimeout());
-//		xaDataSource.setMaintenanceInterval(testConfig.getMaintenanceInterval());
-//		xaDataSource.setMaxIdleTime(testConfig.getMaxIdleTime());
-//		xaDataSource.setTestQuery(testConfig.getTestQuery());
-//		return xaDataSource;
-//	}
+    @Bean(name = "test2SqlSessionFactory3")
+    public SqlSessionFactory testSqlSessionFactory(@Qualifier("test2DataSource2") DataSource dataSource)
+            throws Exception {
+        ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+        SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
+        bean.setDataSource(dataSource);
+        try {
+            bean.setMapperLocations(resolver.getResources("classpath:mybatis/sqlServermapper2/*.xml"));
+            return bean.getObject();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-	@Bean(name = "test2SqlSessionFactory")
-	public SqlSessionFactory testSqlSessionFactory(@Qualifier("test2DataSource") DataSource dataSource)
-			throws Exception {
-		ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-		SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
-		bean.setDataSource(dataSource);
-		try {
-			bean.setMapperLocations(resolver.getResources("classpath:mybatis/sqlServermapper/*.xml"));
-			return bean.getObject();
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	@Bean(name = "test2SqlSessionTemplate")
-	public SqlSessionTemplate testSqlSessionTemplate(
-			@Qualifier("test2SqlSessionFactory") SqlSessionFactory sqlSessionFactory) throws Exception {
-		return new SqlSessionTemplate(sqlSessionFactory);
-	}
+    @Bean(name = "test2SqlSessionTemplate2")
+    public SqlSessionTemplate testSqlSessionTemplate(
+            @Qualifier("test2SqlSessionFactory3") SqlSessionFactory sqlSessionFactory) throws Exception {
+        return new SqlSessionTemplate(sqlSessionFactory);
+    }
 }
